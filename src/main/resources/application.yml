@@ -9,8 +9,8 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        format_sql: ture
         dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: ture
   session:
     jdbc:
       initialize-schema: always
