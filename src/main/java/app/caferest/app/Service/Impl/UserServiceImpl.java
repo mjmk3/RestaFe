@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @Slf4j // for development purpose
@@ -28,11 +29,16 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
         log.info("Sign-Up Form {}", requestMap);
         if(validateSignUpMap(requestMap)) {
-            User user =
+            User user = userRepo.findByEmail(requestMap.get("email"));
+            if(Objects.isNull(user)) {
+                userRepo.save(getUserFromMap(requestMap));
+                return CafeUtils.getResponseEntity("User has been registered in the system", HttpStatus.OK);
+            } else {
+                return CafeUtils.getResponseEntity("Email Already exist in the system.", HttpStatus.BAD_REQUEST);
+            }
         } else {
             return CafeUtils.getResponseEntity(CafeConstant.INVALID_DATA, HttpStatus.BAD_REQUEST);
         }
-        return null;
     }
 
     private boolean validateSignUpMap(Map<String, String> requestMap) {
@@ -42,5 +48,16 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    private User getUserFromMap(Map<String, String> requestMap) {
+        User user = new User();
+        user.setName(requestMap.get("name"));
+        user.setPhone(requestMap.get("phone"));
+        user.setEmail(requestMap.get("email"));
+        user.setPassword(requestMap.get("password"));
+        user.setStatus(requestMap.get("false"));
+        user.setRole(requestMap.get("user"));
+        return user;
     }
 }
