@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bd
+    username: postgres
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: ture
+  session:
+    jdbc:
+      initialize-schema: always
+#springdoc:
+#  pathsToMatch: /**
+
+server:
+  port: 8448
