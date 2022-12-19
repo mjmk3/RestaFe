@@ -1,11 +1,13 @@
 package app.caferest.app.Domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.*;
-
 import java.io.Serializable;
+
+@NamedQuery(name = "User.findByEmail", query = "select u from User u where u.email=:email")
 
 @NoArgsConstructor
 @AllArgsConstructor
