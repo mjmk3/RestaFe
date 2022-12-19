@@ -10,6 +10,7 @@ spring:
     properties:
       hibernate:
         format_sql: ture
+        dialect: org.hibernate.dialect.MySQL8Dialect
   session:
     jdbc:
       initialize-schema: always
