@@ -28,17 +28,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
         log.info("Sign-Up Form {}", requestMap);
-        if(validateSignUpMap(requestMap)) {
-            User user = userRepo.findByEmail(requestMap.get("email"));
-            if(Objects.isNull(user)) {
-                userRepo.save(getUserFromMap(requestMap));
-                return CafeUtils.getResponseEntity("User has been registered in the system", HttpStatus.OK);
+        try {
+            if (validateSignUpMap(requestMap)) {
+                User user = userRepo.findByEmail(requestMap.get("email"));
+                if (Objects.isNull(user)) {
+                    userRepo.save(getUserFromMap(requestMap));
+                    return CafeUtils.getResponseEntity("User has been registered in the system", HttpStatus.OK);
+                } else {
+                    return CafeUtils.getResponseEntity("Email Already exist in the system.", HttpStatus.BAD_REQUEST);
+                }
             } else {
-                return CafeUtils.getResponseEntity("Email Already exist in the system.", HttpStatus.BAD_REQUEST);
+                return CafeUtils.getResponseEntity(CafeConstant.INVALID_DATA, HttpStatus.BAD_REQUEST);
             }
-        } else {
-            return CafeUtils.getResponseEntity(CafeConstant.INVALID_DATA, HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+        return CafeUtils.getResponseEntity(CafeConstant.CHECK_CREDENTIALS, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private boolean validateSignUpMap(Map<String, String> requestMap) {
