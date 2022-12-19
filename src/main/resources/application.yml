@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/restafe
-    username: postgres
+    url: jdbc:mysql://localhost:5432/restafe
+    username: root
     password: root
   jpa:
     show-sql: true
